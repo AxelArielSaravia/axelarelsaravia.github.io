@@ -133,6 +133,11 @@
             body>header {
                 padding: var(--padding);
             }
+            body>main {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
 
             .top {
                 display: flex;
@@ -186,9 +191,6 @@ body>header {
     gap: 1ch;
 }
 body>main {
-    display: flex;
-    align-items: center;
-    justify-content: center;
     margin-bottom: 50px;
 }
 .title {
@@ -215,9 +217,10 @@ h2, article {
 h4 {
     margin: 0;
 }
-.row {
-    display: flex;
-    gap: 1ch;
+.row span:first-child {
+    text-decoration: underline;
+    text-underline-offset: 0.3ch;
+    margin-right: 0.5ch;
 }
 </style>
 
@@ -229,7 +232,7 @@ h4 {
 
             <div class="top">
                 <a class="link"
-                    href="https://github.com/AxelArielSaravia"
+                    href="https://github.com/axelarielsaravia"
                     rel="noreferrer noopener"
                     target="_blank"
                 >
@@ -596,7 +599,7 @@ h4 {
             <h4>dcbga/</h4>
             <p class="row">
                 <span>genre:</span>
-                <span>Chamber</span>
+                <span>Collaborative, Chamber</span>
             </p>
             <p class="row">
                 <span>instruments:</span>

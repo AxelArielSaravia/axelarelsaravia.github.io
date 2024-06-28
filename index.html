@@ -29,23 +29,24 @@
                 --color-primary: var(--color-black);
                 --color-secondary: var(--color-white);
                 --padding: 10px;
+                color-scheme: light;
+                scrollbar-color: var(--color-primary) var(--color-secondary);
             }
 
-                ::selection {
-                    background-color: var(--color-selection);
-                }
             @media (prefers-color-scheme: dark) {
                 :root {
                     --color-selection: var(--color-link-light);
                     --color-link: var(--color-link-dark);
                     --color-primary: var(--color-white);
                     --color-secondary: var(--color-black);
+                    color-scheme: dark;
                 }
                 :root:has(.theme [type="checkbox"]:checked) {
                     --color-selection: var(--color-link-dark);
                     --color-link: var(--color-link-light);
                     --color-primary: var(--color-black);
                     --color-secondary: var(--color-white);
+                    color-scheme: light;
                 }
                 .theme [type="checkbox"]:not(:checked)~.lucide-moon,
                 .theme [type="checkbox"]:checked~.lucide-sun {
@@ -58,12 +59,14 @@
                     --color-link: var(--color-link-light);
                     --color-primary: var(--color-black);
                     --color-secondary: var(--color-white);
+                    color-scheme: light;
                 }
                 :root:has(.theme [type="checkbox"]:checked) {
                     --color-selection: var(--color-link-light);
                     --color-link: var(--color-link-dark);
                     --color-primary: var(--color-white);
                     --color-secondary: var(--color-black);
+                    color-scheme: dark;
                 }
                 .theme [type="checkbox"]:not(:checked)~.lucide-sun,
                 .theme [type="checkbox"]:checked~.lucide-moon {
@@ -74,15 +77,20 @@
             ::-webkit-search-decoration {
                 -webkit-appearance: none;
             }
+            ::selection {
+                background-color: var(--color-selection);
+            }
 
             html, body {
                 margin: 0;
                 padding: 0;
             }
+
             html {
                 -ms-text-size-adjust: 100%;
                 -webkit-text-size-adjust: 100%;
             }
+
             body {
                 font-family: var(--font);
                 background-color: var(--color-secondary);
@@ -91,11 +99,13 @@
                 -moz-osx-font-smoothing: grayscale;
                 -webkit-tap-highlight-color: color-mix(in srgb, var(--color-selection) 25%, transparent);
             }
-            a {
-                text-decoration: none;
-            }
+
             h1,h2,h3,p {
                 margin: 0;
+            }
+
+            a {
+                text-decoration: none;
             }
 
             .icon {
@@ -123,12 +133,17 @@
             body>header {
                 padding: var(--padding);
             }
+            body>main {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
 
             .top {
                 display: flex;
                 align-items: center;
                 justify-content: flex-end;
-                gap: 2ch;
+                gap: 1ch;
             }
 
             .top .link {
@@ -168,30 +183,25 @@
         </style>
         
 <style>
-body>main {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-.content {
+.home {
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
     padding-inline: var(--padding);
     gap: 2ch;
 }
-h1 {
+.home h1 {
     font-size: 3rem;
 }
-h1 span {
+.home h1 span {
     display: block;
 }
 
-nav {
+.home nav {
     font-size: 1rem;
     line-height: 2;
 }
-nav ul {
+.home nav ul {
     list-style-type: square;
     list-style-position: inside;
     margin: 0;
@@ -201,17 +211,17 @@ nav ul {
     border-top: 3px solid var(--color-primary);
 }
 
-nav li {
+.home nav li {
     border-bottom: 3px solid var(--color-primary);
 }
 @media (hover: hover) and (pointer: fine) {
-    nav li:has( a:hover) {
+    .home nav li:has( a:hover) {
         color:var(--color-link);
     }
 }
 
 @media not ((hover: hover) and (pointer: fine)) {
-    nav li {
+    .home nav li {
         color:var(--color-link);
     }
 }
@@ -223,7 +233,7 @@ nav li {
             
             <div class="top">
                 <a class="link"
-                    href="https://github.com/AxelArielSaravia"
+                    href="https://github.com/axelarielsaravia"
                     rel="noreferrer noopener"
                     target="_blank"
                 >
@@ -278,7 +288,7 @@ nav li {
             </div>
         </header>
         <main>
-<div class="content">
+<div class="home">
     <h1>
         <span class="name">Axel Ariel<span>
             <span class="surname">Saravia</span>

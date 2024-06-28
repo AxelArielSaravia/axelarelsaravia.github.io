@@ -29,6 +29,8 @@
                 --color-primary: var(--color-black);
                 --color-secondary: var(--color-white);
                 --padding: 10px;
+                color-scheme: light;
+                scrollbar-color: var(--color-primary) var(--color-secondary);
             }
 
             @media (prefers-color-scheme: dark) {
@@ -37,12 +39,14 @@
                     --color-link: var(--color-link-dark);
                     --color-primary: var(--color-white);
                     --color-secondary: var(--color-black);
+                    color-scheme: dark;
                 }
                 :root:has(.theme [type="checkbox"]:checked) {
                     --color-selection: var(--color-link-dark);
                     --color-link: var(--color-link-light);
                     --color-primary: var(--color-black);
                     --color-secondary: var(--color-white);
+                    color-scheme: light;
                 }
                 .theme [type="checkbox"]:not(:checked)~.lucide-moon,
                 .theme [type="checkbox"]:checked~.lucide-sun {
@@ -55,12 +59,14 @@
                     --color-link: var(--color-link-light);
                     --color-primary: var(--color-black);
                     --color-secondary: var(--color-white);
+                    color-scheme: light;
                 }
                 :root:has(.theme [type="checkbox"]:checked) {
                     --color-selection: var(--color-link-light);
                     --color-link: var(--color-link-dark);
                     --color-primary: var(--color-white);
                     --color-secondary: var(--color-black);
+                    color-scheme: dark;
                 }
                 .theme [type="checkbox"]:not(:checked)~.lucide-sun,
                 .theme [type="checkbox"]:checked~.lucide-moon {
@@ -127,6 +133,11 @@
             body>header {
                 padding: var(--padding);
             }
+            body>main {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
 
             .top {
                 display: flex;
@@ -179,6 +190,9 @@ body>header {
     justify-content: flex-end;
     gap: 1ch;
 }
+body>main {
+    margin-bottom: 50px;
+}
 .title::before {
     content: "";
     display: block;
@@ -190,6 +204,10 @@ body>header {
     background: var(--color-secondary);
     margin-left: 2ch;
 }
+h2, article {
+    padding: 2ch 1ch;
+    line-height: 1.5;
+}
 </style>
 
     </head>
@@ -200,7 +218,7 @@ body>header {
 
             <div class="top">
                 <a class="link"
-                    href="https://github.com/AxelArielSaravia"
+                    href="https://github.com/axelarielsaravia"
                     rel="noreferrer noopener"
                     target="_blank"
                 >
@@ -256,21 +274,16 @@ body>header {
         </header>
         <main>
 <div class="dev-projects">
+    <h2>Dev Projects</h2>
     <p>This is a </p>
-    <section>
-        <h2 class="title"><span>2024</span></h2>
-        <article>
-        </article>
-        <article>
-        </article>
-        <article>
-        </article>
+    <section class="2024">
+        <h3 class="title"><time datetime="2024">2024</time></h3>
     </section>
-    <section>
-        <h2 class="title"><span>2023</span></h2>
+    <section class="2023">
+        <h3 class="title"><time datetime="2023">2023</time></h3>
     </section>
-    <section>
-        <h2 class="title"><span>2022</span></h2>
+    <section class="2022">
+        <h3 class="title"><time datetime="2022">2022</time></h3>
     </section>
 </div>
 </main>
