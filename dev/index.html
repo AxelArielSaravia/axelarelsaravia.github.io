@@ -31,6 +31,24 @@
                 --padding: 10px;
                 color-scheme: light;
                 scrollbar-color: var(--color-primary) var(--color-secondary);
+ --expo-in: linear(
+    0 0%, 0.0085 31.26%, 0.0167 40.94%,
+    0.0289 48.86%, 0.0471 55.92%,
+    0.0717 61.99%, 0.1038 67.32%,
+    0.1443 72.07%, 0.1989 76.7%,
+    0.2659 80.89%, 0.3465 84.71%,
+    0.4419 88.22%, 0.554 91.48%,
+    0.6835 94.51%, 0.8316 97.34%, 1 100%
+  );
+  --expo-out: linear(
+    0 0%, 0.1684 2.66%, 0.3165 5.49%,
+    0.446 8.52%, 0.5581 11.78%,
+    0.6535 15.29%, 0.7341 19.11%,
+    0.8011 23.3%, 0.8557 27.93%,
+    0.8962 32.68%, 0.9283 38.01%,
+    0.9529 44.08%, 0.9711 51.14%,
+    0.9833 59.06%, 0.9915 68.74%, 1 100%
+  );
             }
 
             @media (prefers-color-scheme: dark) {
@@ -92,12 +110,35 @@
             }
 
             body {
+                position: relative;
                 font-family: var(--font);
-                background-color: var(--color-secondary);
                 color: var(--color-primary);
                 -webkit-font-smoothing: antialiased;
                 -moz-osx-font-smoothing: grayscale;
                 -webkit-tap-highlight-color: color-mix(in srgb, var(--color-selection) 25%, transparent);
+                background-color: var(--color-secondary);
+            }
+            body::before {
+                --size: 4ch;
+                --color: color-mix(in srgb, var(--color-primary) 25%, transparent);
+                content: "";
+                position:fixed;
+                inset: 0;
+                width: 100%;
+                height: 100lvh;
+                background:
+                    linear-gradient(90deg, var(--color) 1px, transparent 1px var(--size)) 50% 50% / var(--size) var(--size),
+                    linear-gradient(var(--color) 1px, transparent 1px var(--size)) 50% 50% / var(--size) var(--size);
+                z-index: -1;
+            }
+            body::after {
+                content: "";
+                position:fixed;
+                inset: 0;
+                width: 100%;
+                height: 100lvh;
+                background: linear-gradient(160deg, transparent, var(--color-secondary) 10%, var(--color-secondary) 80%, transparent 100%);
+                z-index: -1;
             }
 
             h1,h2,h3,p {
@@ -180,7 +221,38 @@
                     text-decoration: underline;
                 }
             }
-        </style>
+
+             
+            @view-transition {
+                navigation: auto;
+            }
+            ::view-transition-group(root) {
+                animation-duration: 0.3s;
+            }
+            @keyframes move-out {
+                from {
+                    transform: translate(0, 0);
+                }
+                to {
+                    transform: translate(-100%, -100%);
+                }
+            }
+            @keyframes move-in {
+                from {
+                    transform: translate(100%, 100%);
+                }
+                to {
+                    transform: translate(0, 0);
+                }
+            }
+            ::view-transition-old(root) {
+                animation: 0.4s ease-in both move-out;
+
+            }
+            ::view-transition-new(root) {
+                animation: 0.4s ease-in both move-in;
+            }
+            </style>
         
 <style>
 body>header {
@@ -193,20 +265,65 @@ body>header {
 body>main {
     margin-bottom: 50px;
 }
+.dev-projects {
+    max-width: 1200px;
+}
+.title {
+    position: sticky;
+    top: 0;
+    padding: 1ch 0;
+    overflow: hidden;
+    background: linear-gradient(0deg, transparent, var(--color-secondary) 40%);
+}
 .title::before {
     content: "";
-    display: block;
-    border: 1px solid var(--color-primary);
-    translate: 0 1ch;
+    position: absolute;
+    inset: 0;
+    height: 2px;
+    width: 1ch;
+    background: var(--color-primary);
+    translate: 0 2ch;
 }
-.title span {
+.title::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    height: 2px;
+    background: var(--color-primary);
+    translate: 6ch 2ch;
+}
+.title time {
     position: relative;
-    background: var(--color-secondary);
-    margin-left: 2ch;
+    display: inline-block;
+    translate: 1.7ch 0;
 }
 h2, article {
     padding: 2ch 1ch;
     line-height: 1.5;
+}
+.description {
+    padding: 0 1ch;
+}
+h4 {
+    margin: 0;
+}
+.row span:first-child {
+    text-decoration: underline;
+    text-underline-offset: 0.3ch;
+    margin-right: 0.5ch;
+}
+
+footer {
+    padding: 5ch 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 1ch;
+}
+
+footer .icon {
+    width: 2ch;
 }
 </style>
 
@@ -275,20 +392,483 @@ h2, article {
         <main>
 <div class="dev-projects">
     <h2>Dev Projects</h2>
-    <p>This is a </p>
+    <p class="description">
+        This showcases some of my projects and exercises, reflecting my
+        explorations. Some of them may be unfinished or outdated.
+    </p>
     <section class="2024">
         <h3 class="title"><time datetime="2024">2024</time></h3>
+        <article>
+            <h4>JCC, Just Compile my C</h4>
+            <p class="row">
+                <span>about:</span>
+                <span>This is my own wrapper to compile C with the GCC compiler</span>
+            </p>
+            <p class="row">
+                <span>type:</span>
+                <span>CLI</span>
+            </p>
+            <p class="row">
+                <span>technology:</span>
+                <span>C, Git</span>
+            </p>
+            <p class="row">
+                <span>links:</span>
+                <span>
+                    <a rel="noreferrer noopener"
+                        target="_blank"
+                        href="https://github.com/axelarielsaravia/jcc"
+                    >[Github]</a>
+                </span>
+            </p>
+        </article>
+        <article>
+            <h4>Data quick cleaner</h4>
+            <p class="row">
+                <span>about:</span>
+                <span>A tool to remove page or browser data quickly</span>
+            </p>
+            <p class="row">
+                <span>type:</span>
+                <span>Chrome extension</span>
+            </p>
+            <p class="row">
+                <span>technology:</span>
+                <span>HTML, CSS, Javascript, Git, Bash, Bun</span>
+            </p>
+            <p class="row">
+                <span>links:</span>
+                <span>
+                    <a rel="noreferrer noopener"
+                        target="_blank"
+                        href="https://chromewebstore.google.com/detail/ldbagdcemmnmcniabnlgdhkbngnljloo"
+                    >[Chrome web store]</a>
+                    <a rel="noreferrer noopener"
+                        target="_blank"
+                        href="https://github.com/AxelArielSaravia/data-quick-cleaner"
+                    >[Github]</a>
+                </span>
+            </p>
+        </article>
+        <article>
+            <h4>ws (working session)</h4>
+            <p class="row">
+                <span>about:</span>
+                <span>
+                    Manages working directories, and simplify 'tmux sessions'.
+                    Its always create a tmux session with 2 windows, for a
+                    text editor, and for a terminal.
+                </span>
+            </p>
+            <p class="row">
+                <span>type:</span>
+                <span>CLI</span>
+            </p>
+            <p class="row">
+                <span>technology:</span>
+                <span>Bash, Git</span>
+            </p>
+            <p class="row">
+                <span>links:</span>
+                <span>
+                    <a rel="noreferrer noopener"
+                        target="_blank"
+                        href="https://github.com/axelarielsaravia/ws"
+                    >[Github]</a>
+                </span>
+            </p>
+        </article>
+        <article>
+            <h4>hsuperprod <small>[[outdated, can be obsolete]]</small></h4>
+            <p class="row">
+                <span>about:</span>
+                <span>CLI tool for web data extraction from Argentinian supermarkets</span>
+            </p>
+            <p class="row">
+                <span>type:</span>
+                <span>CLI</span>
+            </p>
+            <p class="row">
+                <span>technology:</span>
+                <span>Go, Git</span>
+            </p>
+            <p class="row">
+                <span>links:</span>
+                <span>
+                    <a rel="noreferrer noopener"
+                        target="_blank"
+                        href="https://github.com/axelarielsaravia/hsuperprod"
+                    >[Github]</a>
+                </span>
+            </p>
+        </article>
     </section>
     <section class="2023">
         <h3 class="title"><time datetime="2023">2023</time></h3>
+        <article>
+            <h4>Vanilla Movie</h4>
+            <p class="row">
+                <span>about:</span>
+                <span>A movie tracker, inspired by Netflix</span>
+            </p>
+            <p class="row">
+                <span>type:</span>
+                <span>Web Page</span>
+            </p>
+            <p class="row">
+                <span>technology:</span>
+                <span>HTML, CSS, JavaScript, Bun, Git, Bash, Vercel</span>
+            </p>
+            <p class="row">
+                <span>links:</span>
+                <span>
+                    <a rel="noreferrer noopener"
+                        target="_blank"
+                        href="https://aas-vanilla-movie.vercel.app/"
+                    >[Demo]</a>
+                    <a rel="noreferrer noopener"
+                        target="_blank"
+                        href="https://github.com/AxelArielSaravia/vanilla-movie"
+                    >[Github]</a>
+                </span>
+            </p>
+        </article>
+        <article>
+            <h4>Bookmarks quick view</h4>
+            <p class="row">
+                <span>about:</span>
+                <span>View and manage browser bookmarks</span>
+            </p>
+            <p class="row">
+                <span>type:</span>
+                <span>Chromium extension</span>
+            </p>
+            <p class="row">
+                <span>technology</span>
+                <span>HTML, CSS, Javascript, Git, Bash, Bun</span>
+            </p>
+            <p class="row">
+                <span>links:</span>
+                <span>
+                    <a rel="noreferrer noopener"
+                        target="_blank"
+                        href="https://chromewebstore.google.com/detail/bookmarks-quick-view/oboploabbffifnkmiipmbpoaihabhjpm"
+                    >[Chrome web store]</a>
+                    <a
+                        rel="noreferrer noopener"
+                        target="_blank"
+                        href="https://github.com/AxelArielSaravia/bookmarks-quick-view"
+                    >[Github]</a>
+                </span>
+            </p>
+        </article>
+        <article>
+            <h4>Pixel Scroll</h4>
+            <p class="row">
+                <span>about:</span>
+                <span>Scroll with pixel distance</span>
+            </p>
+            <p class="row">
+                <span>type:</span>
+                <span>Chromium extension</span>
+            </p>
+            <p class="row">
+                <span>technology:</span>
+                <span>HTML, CSS, Javascript, Git, Bash, Bun</span>
+            </p>
+            <p class="row">
+                <span>links:</span>
+                <span>
+                    <a rel="noreferrer noopener"
+                        target="_blank"
+                        href="https://chromewebstore.google.com/detail/pixel-scroll/ldpfleifnihdcnanhifkffgalohmligb"
+                    >[Chrome web store]</a>
+                    <a rel="noreferrer noopener"
+                        target="_blank"
+                        href="https://github.com/AxelArielSaravia/pixel-scroll"
+                    >[Github]</a>
+                </span>
+            </p>
+        </article>
+        <article>
+            <h4>History quick view</h4>
+            <p class="row">
+                <span>about:</span>
+                <span>View and manage browser history data</span>
+            </p>
+            <p class="row">
+                <span>type:</span>
+                <span>Chromium extension</span>
+            </p>
+            <p class="row">
+                <span>technology:</span>
+                <span>HTML, CSS, Javascript, Git, Bash, Bun</span>
+            </p>
+            <p class="row">
+                <span>links:</span>
+                <span>
+                    <a rel="noreferrer noopener"
+                        target="_blank"
+                        href="https://chromewebstore.google.com/detail/history-quick-view/ednfjcijimijfccmlfbeejidmbekdmic"
+                    >[Chrome web store]</a>
+                    <a rel="noreferrer noopener"
+                        target="_blank"
+                        href="https://github.com/AxelArielSaravia/history-quick-view"
+                    >[Github]</a>
+                </span>
+            </p>
+        </article>
+        <article>
+            <h4>Vanilla ToDo</h4>
+            <p class="row">
+                <span>about:</span>
+                <span>A todo app build with pure JavaScript</span>
+            </p>
+            <p class="row">
+                <span>type:</span>
+                <span>Web App</span>
+            </p>
+            <p class="row">
+                <span>technology:</span>
+                <span>HTML, CSS, Javascript, Git, Bun, Firebase</span>
+            </p>
+            <p class="row">
+                <span>links:</span>
+                <span>
+                    <a rel="noreferrer noopener"
+                        target="_blank"
+                        href="https://aas-vanilla-todo.web.app"
+                    >[Demo]</a>
+                    <a rel="noreferrer noopener"
+                        target="_blank"
+                        href="https://github.com/AxelArielSaravia/vanilla-todo"
+                    >[Github]</a>
+                </span>
+            </p>
+        </article>
+        <article>
+            <h4>React ToDo</h4>
+            <p class="row">
+                <span>about:</span>
+                <span>A todo app build with React.js</span>
+            </p>
+            <p class="row">
+                <span>type:</span>
+                <span>Web App</span>
+            </p>
+            <p class="row">
+                <span>technology:</span>
+                <span>HTML, CSS, Javascript, Git, Bun, React, Firebase</span>
+            </p>
+            <p class="row">
+                <span>links:</span>
+                <span>
+                    <a rel="noreferrer noopener"
+                        target="_blank"
+                        href="https://aas-react-todo.web.app"
+                    >[Demo]</a>
+                    <a rel="noreferrer noopener"
+                        target="_blank"
+                        href="https://github.com/AxelArielSaravia/react-todo"
+                    >[Github]</a>
+                </span>
+            </p>
+        </article>
+        <article>
+            <h4>inSets</h4>
+            <p class="row">
+                <span>about:</span>
+                <span>
+                    A Music Composition App that mixes audio files at random, allowing
+                    user control over effect parameters and generative probabilities.
+                </span>
+            </p>
+            <p class="row">
+                <span>type:</span>
+                <span>Web App</span>
+            </p>
+            <p class="row">
+                <span>technology:</span>
+                <span>
+                    JavaScript, CSS, HTML, Bash, Git,
+                    Web Audio API, Bun, Firebase, React
+                </span>
+            </p>
+            <p class="row">
+                <span>links:</span>
+                <span>
+                    <a rel="noreferrer noopener"
+                        target="_blank"
+                        href="https://insets-music.web.app/"
+                    >[App]</a>
+                    <a rel="noreferrer noopener"
+                        target="_blank"
+                        href="https://github.com/AxelArielSaravia/inSets"
+                    >[Github]</a>
+                </span>
+            </p>
+        </article>
     </section>
     <section class="2022">
         <h3 class="title"><time datetime="2022">2022</time></h3>
+        <article>
+            <h4>Insurance Producer Page</h4>
+            <p class="row">
+                <span>about:</span>
+                <span>This is a freelance work</span>
+            </p>
+            <p class="row">
+                <span>type:</span>
+                <span>Web page</span>
+            </p>
+            <p class="row">
+                <span>technology:</span>
+                <span>Bun, CSS, Firebase, Git, HTML, Javascript, Webpack</span>
+            </p>
+            <p class="row">
+                <span>links:</span>
+                <span>
+                    <a rel="noreferrer noopener"
+                        target="_blank"
+                        href="https://ag-seguros.web.app/"
+                    >[Demo]</a>
+                </span>
+            </p>
+        </article>
+        <article>
+            <h4>JS Vanilla State Managment</h4>
+            <p class="row">
+                <span>about:</span>
+                <span>A JavaScript library to manage state and rendering html</span>
+            </p>
+            <p class="row">
+                <span>type:</span>
+                <span>Javascript library</span>
+            </p>
+            <p class="row">
+                <span>technology:</span>
+                <span>HTML, CSS, Javascript</span>
+            </p>
+            <p class="row">
+                <span>links:</span>
+                <span>
+                    <a rel="noreferrer noopener"
+                        target="_blank"
+                        href="https://codepen.io/axelarielsaravia/pen/mdKdPqX"
+                    >[Demo]</a>
+                </span>
+            </p>
+        </article>
+        <article>
+            <h4>Drum Machine</h4>
+            <p class="row">
+                <span>type:</span>
+                <span>Web app</span>
+            </p>
+            <p class="row">
+                <span>technology:</span>
+                <span>HTML, CSS, Javascript</span>
+            </p>
+            <p class="row">
+                <span>links:</span>
+                <span>
+                    <a rel="noreferrer noopener"
+                        target="_blank"
+                        href="https://codepen.io/axelarielsaravia/pen/xxPpegZ"
+                    >[Demo]</a>
+                </span>
+            </p>
+        </article>
+        <article>
+            <h4>25+5 Clock</h4>
+            <p class="row">
+                <span>type:</span>
+                <span>Web app</span>
+            </p>
+            <p class="row">
+                <span>technology:</span>
+                <span>HTML, CSS, Javascript</span>
+            </p>
+            <p class="row">
+                <span>links:</span>
+                <span>
+                    <a rel="noreferrer noopener"
+                        target="_blank"
+                        href="https://codepen.io/axelarielsaravia/pen/dyZJbEB"
+                    >[Demo]</a>
+                </span>
+            </p>
+        </article>
+        <article>
+            <h4>Calculator</h4>
+            <p class="row">
+                <span>type:</span>
+                <span>Web app</span>
+            </p>
+            <p class="row">
+                <span>technology:</span>
+                <span>HTML, CSS, Javascript</span>
+            </p>
+            <p class="row">
+                <span>links:</span>
+                <span>
+                    <a rel="noreferrer noopener"
+                        target="_blank"
+                        href="https://codepen.io/axelarielsaravia/pen/gOXxzqb"
+                    >[Demo]</a>
+                </span>
+            </p>
+        </article>
+        <article>
+            <h4>Random Quote Machine</h4>
+            <p class="row">
+                <span>type:</span>
+                <span>Web app</span>
+            </p>
+            <p class="row">
+                <span>technology:</span>
+                <span>HTML, CSS, Javascript</span>
+            </p>
+            <p class="row">
+                <span>links:</span>
+                <span>
+                    <a rel="noreferrer noopener"
+                        target="_blank"
+                        href="https://codepen.io/axelarielsaravia/pen/abVyNao"
+                    >[Demo]</a>
+                </span>
+            </p>
+        </article>
     </section>
 </div>
 </main>
+        
+<footer>
+    <svg xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        class="icon lucide-mail"
+    >
+        <rect width="20" height="16" x="2" y="4" rx="2"/>
+        <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+    </svg>
+    <small>
+        <a rel="noreferrer noopener"
+            target="_blank"
+            href="mailto:axelarielsaravia@gmail.com"
+        >
+            axelarielsaravia@gmail.com
+        </a>
+    </small>
+</footer>
+
     </body>
 </html>
+
 
 
 
